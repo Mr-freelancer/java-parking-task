@@ -51,6 +51,12 @@ http://localhost:8080
 #### /barriers/{id} POST
       {"command":"close"}
 Закрытие шлагбаума парковки по **id**
+#### /sensors/{id} POST
+      {"command":"on"}
+Передача сигнала с сенсора по **id**, о том, что место занято
+#### /sensors/{id} POST
+      {"command":"off"}
+Передача сигнала с сенсора по **id**, о том, что место свободно
 
 ---
 

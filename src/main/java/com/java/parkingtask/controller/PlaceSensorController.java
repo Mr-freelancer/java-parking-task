@@ -1,4 +1,7 @@
 package com.java.parkingtask.controller;
+import com.java.parkingtask.model.Barrier;
+import com.java.parkingtask.model.CommandDTO;
+import com.java.parkingtask.model.PlaceSensor;
 import com.java.parkingtask.service.PlaceSensorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +27,23 @@ public class PlaceSensorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sensor Not found");
         }
         return ResponseEntity.ok(placeSensorService.getPlaceSensorById(id));
+    }
+
+    @PostMapping(value="/{id}")
+    public ResponseEntity<?> sensorCommand(@PathVariable("id") int id, @RequestBody CommandDTO requestCommand) {
+        var command = requestCommand.getCommand();
+
+        if(!placeSensorService.isPlaceSensorContain(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Barrier Not Found");
+        }
+
+        PlaceSensor serverPlaceSensor = placeSensorService.getPlaceSensorById(id);
+
+        if(placeSensorService.countFreePlaces() > 0){
+            placeSensorService.doCommand(serverPlaceSensor, command);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking is full");
+        }
+        return ResponseEntity.ok(placeSensorService.save(serverPlaceSensor));
     }
 }
