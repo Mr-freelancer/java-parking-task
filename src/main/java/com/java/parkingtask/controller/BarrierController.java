@@ -29,7 +29,8 @@ public class BarrierController {
 
         Barrier serverBarrier = barrierService.getBarrierById(id);
 
-        if(placeSensorService.countFreePlaces() > 0){
+
+        if(placeSensorService.countFreePlaces() > 0 || requestCommand.getCommand().equals("close") || serverBarrier.getBarrierType().equals("out")){
             barrierService.doCommand(serverBarrier, command);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking is full");
