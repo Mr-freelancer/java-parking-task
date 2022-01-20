@@ -16,7 +16,6 @@ public class ParkingStateController {
 
     @GetMapping(value = "/")
     public ResponseEntity<?> getParkingInfo(){
-        System.out.println(placeSensorService.countFreePlaces());
         return ResponseEntity.ok(parkingState);
     }
 
