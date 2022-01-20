@@ -34,16 +34,12 @@ public class PlaceSensorController {
         var command = requestCommand.getCommand();
 
         if(!placeSensorService.isPlaceSensorContain(id)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Barrier Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sensor Not Found");
         }
 
         PlaceSensor serverPlaceSensor = placeSensorService.getPlaceSensorById(id);
+        placeSensorService.doCommand(serverPlaceSensor, command);
 
-        if(placeSensorService.countFreePlaces() > 0){
-            placeSensorService.doCommand(serverPlaceSensor, command);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking is full");
-        }
         return ResponseEntity.ok(placeSensorService.save(serverPlaceSensor));
     }
 }
