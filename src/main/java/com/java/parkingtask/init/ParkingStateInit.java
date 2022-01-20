@@ -1,4 +1,4 @@
-package com.java.parkingtask.config;
+package com.java.parkingtask.init;
 
 import com.java.parkingtask.service.ParkingStateService;
 import com.java.parkingtask.service.PlaceSensorService;
