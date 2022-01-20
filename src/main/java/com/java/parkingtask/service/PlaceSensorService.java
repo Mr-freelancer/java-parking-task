@@ -1,17 +1,26 @@
 package com.java.parkingtask.service;
 
-import com.java.parkingtask.model.Barrier;
+import com.java.parkingtask.event.PlaceSensorEvent;
+import com.java.parkingtask.event.PlaceSensorEventPublisher;
 import com.java.parkingtask.model.PlaceSensor;
 import com.java.parkingtask.repository.PlaceSensorsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
 public class PlaceSensorService {
-    private final PlaceSensorsRepository placeSensorsRepository;
+    private PlaceSensorsRepository placeSensorsRepository;
+    private PlaceSensorEventPublisher sensorEventPublisher;
 
-    public PlaceSensorService(PlaceSensorsRepository placeSensorsRepository) {
+    @Autowired
+    public void setSensorEventPublisher(PlaceSensorEventPublisher sensorEventPublisher) {
+        this.sensorEventPublisher = sensorEventPublisher;
+    }
+
+    @Autowired
+    public void setPlaceSensorsRepository(PlaceSensorsRepository placeSensorsRepository) {
         this.placeSensorsRepository = placeSensorsRepository;
     }
 
@@ -43,9 +52,11 @@ public class PlaceSensorService {
         switch (command){
             case "on":
                 serverPlaceSensor.setActive(true);
+                sensorEventPublisher.publishEvent(new PlaceSensorEvent(this));
                 break;
             case "off":
                 serverPlaceSensor.setActive(false);
+                sensorEventPublisher.publishEvent(new PlaceSensorEvent(this));
                 break;
             default:
                 System.out.println("Command Not Found");

@@ -9,9 +9,10 @@ import java.util.Set;
 
 @Service
 public class BarrierService {
-    private final BarrierRepository barrierRepository;
+    private BarrierRepository barrierRepository;
 
-    public BarrierService(BarrierRepository barrierRepository) {
+    @Autowired
+    public void setBarrierRepository(BarrierRepository barrierRepository) {
         this.barrierRepository = barrierRepository;
     }
 

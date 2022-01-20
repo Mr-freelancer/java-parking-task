@@ -1,8 +1,8 @@
 package com.java.parkingtask.controller;
-import com.java.parkingtask.model.Barrier;
 import com.java.parkingtask.model.CommandDTO;
 import com.java.parkingtask.model.PlaceSensor;
 import com.java.parkingtask.service.PlaceSensorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/sensors/")
 public class PlaceSensorController {
-    private final PlaceSensorService placeSensorService;
-
-    public PlaceSensorController(PlaceSensorService placeSensorService) {
-        this.placeSensorService = placeSensorService;
-    }
+    private PlaceSensorService placeSensorService;
 
     @GetMapping(value = "/")
     public ResponseEntity<?> getAllSensors(){
@@ -41,5 +37,10 @@ public class PlaceSensorController {
         placeSensorService.doCommand(serverPlaceSensor, command);
 
         return ResponseEntity.ok(placeSensorService.save(serverPlaceSensor));
+    }
+
+    @Autowired
+    public void setPlaceSensorService(PlaceSensorService placeSensorService) {
+        this.placeSensorService = placeSensorService;
     }
 }
